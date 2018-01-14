@@ -40,20 +40,19 @@ public class Employee extends Person implements Serializable{
 	public void setLink(AtomLink link) {
 		
 	}
-//------------------------------------------------------------------------------------------------
-	public Employee(Integer idPerson, String name, String email, String telNumber, Date birthdate, String username,
-			String password, List<Project> projects) {
-		super(idPerson, name, email, telNumber, birthdate, username, password);
-		this.projects = projects;
-	}
+	
+	//-------------CONSTRUCTOR---------------------------------
 
 	public Employee() {
 		super();
 	}
 
-	public Employee(Integer idPerson, String name, String username) {
-		super(idPerson, name, username);
+	public Employee(Integer idPerson, String name, String email, String telNumber, Date birthdate, String username,
+			String password) {
+		super(idPerson, name, email, telNumber, birthdate, username, password);
 	}
+
+
 	
 	
 

@@ -4,6 +4,7 @@ import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertTrue;
 
 import java.util.Collection;
+import java.util.Date;
 import java.util.logging.Logger;
 
 import javax.ejb.EJB;
@@ -53,13 +54,13 @@ public class TestAplicantServiceEJBArq {
 	public void test3_AddAplicant() {
 		logger.info("DEBUG: Junit TESTING: testAddAplicant ...");
 
-		Integer AplicantToAdd = 3;
+		Integer AplicantsToAdd = 3;
 		Integer id=1000;
-		for (int i = 1; i <= AplicantToAdd; i++) {
-			service.addAplicant(new Aplicant(id+i, "Person "+i, "user"+i, "UAIC", "FEAA"));
+		for (int i = 1; i <= AplicantsToAdd; i++) {
+			service.addAplicant(new Aplicant(id+i, "Person "+id+i, "mail"+id+i+"a@dam.com", "07513"+id+i, new Date(), "user"+id+i+"a", "password"+id+i,"FEAA", "UAIC"));
 		}
 		Collection<Aplicant> Aplicants = service.getAplicants();
-		assertTrue("Fail to add Aplicants!", Aplicants.size() == AplicantToAdd);
+		assertTrue("Fail to add Aplicants!", Aplicants.size() == AplicantsToAdd);
 	}
 
 	@Test

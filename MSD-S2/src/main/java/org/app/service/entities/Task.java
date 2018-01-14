@@ -97,6 +97,7 @@ public class Task implements Serializable{
 		this.name = name;
 		this.project = project;
 	}
+
 	
 	
 	

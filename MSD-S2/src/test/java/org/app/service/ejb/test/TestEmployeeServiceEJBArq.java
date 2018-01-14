@@ -4,12 +4,14 @@ import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertTrue;
 
 import java.util.Collection;
+import java.util.Date;
 import java.util.logging.Logger;
 
 import javax.ejb.EJB;
 
 import org.app.service.ejb.EmployeeService;
 import org.app.service.ejb.EmployeeServiceEJB;
+import org.app.service.entities.Aplicant;
 import org.app.service.entities.Employee;
 import org.jboss.arquillian.container.test.api.Deployment;
 import org.jboss.arquillian.junit.Arquillian;
@@ -52,13 +54,12 @@ public class TestEmployeeServiceEJBArq {
 	public void test3_AddEmployee() {
 		logger.info("DEBUG: Junit TESTING: testAddEmployee ...");
 
-		Integer EmployeeToAdd = 3;
-		Integer id=2000;
-		for (int i = 1; i <= EmployeeToAdd; i++) {
-			service.addEmployee(new Employee(id+i, "Person"+i+i, "user"+i+i));
+		Integer EmployeesToAdd = 3;
+		for (int i = 1; i <= EmployeesToAdd; i++) {
+			service.addEmployee(new Employee(2000+i, "Person"+(2000+i), "mail"+(2000+i)+"a@dam.com", "075193"+(2000+i), new Date(), "user"+(2000+i)+"a", "password"+(2000+i)));			
 		}
 		Collection<Employee> Employees = service.getEmployees();
-		assertTrue("Fail to add Employees!", Employees.size() == EmployeeToAdd);
+		assertTrue("Fail to add Employees!", Employees.size() == EmployeesToAdd);
 	}
 
 	@Test

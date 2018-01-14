@@ -57,26 +57,23 @@ public class Aplicant extends Person implements Serializable {
 	public void setInternships(List<Internship> internships) {
 		this.internships = internships;
 	}
-	//--------------------------------------------------------------------
+	
+	//-------------CONSTRUCTOR---------------------------------
+	
 	public Aplicant() {
 		super();
 		// TODO Auto-generated constructor stub
 	}
 
-
 	public Aplicant(Integer idPerson, String name, String email, String telNumber, Date birthdate, String username,
-			String password, String university, String department, List<Internship> internships) {
+			String password, String department, String university) {
 		super(idPerson, name, email, telNumber, birthdate, username, password);
-		this.university = university;
 		this.department = department;
-		this.internships = internships;
+		this.university = university;
 	}
 
-	public Aplicant(Integer idPerson, String name, String username, String university, String department) {
-		super(idPerson, name, username);
-		this.university = university;
-		this.department = department;
-	}
+
+
 
 
 

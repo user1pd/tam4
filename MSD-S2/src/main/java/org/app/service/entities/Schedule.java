@@ -49,7 +49,9 @@ public class Schedule implements Serializable{
 	public void setInternship(Internship internship) {
 		this.internship = internship;
 	}
-	//------------------------------------------------------------------------------------------------
+
+	//-----------CONSTRUCTORS--------------------------
+
 	public Schedule(Integer id, Integer day, String startHour, String endHour, Internship internship) {
 		super();
 		this.id = id;

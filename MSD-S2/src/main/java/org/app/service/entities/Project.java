@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Date;
 import java.util.List;
+import java.util.Random;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Entity;
@@ -81,29 +82,43 @@ public class Project implements Serializable{
 		this.name = name;
 	}
 	
-//---------------------------------------------------------------------
+	//---------------------------------------------------------------------
 	
 	@Override
 	public String toString() {
 		return "Project [IdProject=" + idProject + ", name=" + name + "]";
 	}
 	
-//-----------CONSTRUCTORS-------------------------
+	//-----------CONSTRUCTORS-------------------------
+	
 	public Project() {
 		super();
 	}
 	
-	public Project(Integer idProject, String name) {
-		super();
-		this.idProject = idProject;
-		this.name = name;
-	}
 	public Project(Integer idProject, String name, Date startDate) {
 		super();
 		this.idProject = idProject;
 		this.name = name;
 		this.startDate = startDate;
 	}
+	
+	//--------------------------------------------
+	
+	public Project buildProject(Integer idProject, String name, Date startDate, Integer tasksCounter) {
+		Project project= new Project(idProject, name+"."+idProject, new Date());
+		List<Task> tasksP=new ArrayList<>();
+		
+		for(int i=0; i<=tasksCounter; i++) {
+			tasksP.add(new Task(9100+i, "Task."+(9100+i), project));			
+		}
+		project.setTasks(tasksP);
+		return project;
+	}
+	
+	
+	
+	
+	
 	
 
 
