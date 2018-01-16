@@ -5,6 +5,7 @@ import static org.junit.Assert.assertTrue;
 
 import java.util.Collection;
 import java.util.Date;
+import java.util.List;
 import java.util.logging.Logger;
 
 import javax.ejb.EJB;
@@ -86,7 +87,7 @@ public class TestProjectServiceEJBArq {
 				service.addProject(new Project(id+i, "Pr."+(id+i), new Date(), tasksToAdd));
 			}
 			Collection<Project> Projects = service.getProjects();
-//			assertTrue("Fail to add Projects!", Projects.size() == projectsToAdd);
+			assertTrue("Fail to add Projects!", Projects.size() == projectsToAdd);
 		}
 
 	@Test

@@ -16,8 +16,15 @@ import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
+import javax.xml.bind.annotation.XmlAccessType;
+import javax.xml.bind.annotation.XmlAccessorType;
+import javax.xml.bind.annotation.XmlElement;
+import javax.xml.bind.annotation.XmlElementWrapper;
+import javax.xml.bind.annotation.XmlRootElement;
 
 import org.app.service.ejb.InternshipService;
+@XmlRootElement(name="internship")
+@XmlAccessorType(XmlAccessType.NONE) 
 @Entity
 public class Internship implements Serializable{
 	@Id @GeneratedValue(strategy=GenerationType.AUTO)
@@ -36,18 +43,21 @@ public class Internship implements Serializable{
 	private List<Task> tasks = new ArrayList<>();
 	
 //---------------get & set-----------------------------------------------------------------------
+	@XmlElement()
 	public Date getInternshipStartDate() {
 		return internshipStartDate;
 	}
 	public void setInternshipStartDate(Date internshipStartDate) {
 		this.internshipStartDate = internshipStartDate;
 	}
+	@XmlElement()
 	public Date getInternshipEndDate() {
 		return internshipEndDate;
 	}
 	public void setInternshipEndDate(Date internshipEndDate) {
 		this.internshipEndDate = internshipEndDate;
 	}
+	@XmlElement()
 	public Aplicant getAplicant() {
 		return aplicant;
 	}
@@ -60,12 +70,14 @@ public class Internship implements Serializable{
 	public void setSchedule(List<Schedule> schedule) {
 		this.schedule = schedule;
 	}
+	@XmlElement()
 	public Integer getIdInternship() {
 		return idInternship;
 	}
 	public void setIdInternship(Integer idInternship) {
 		this.idInternship = idInternship;
 	}
+//	@XmlElementWrapper(name="tasks") @XmlElement(name="task")
 	public List<Task> getTasks() {
 		return tasks;
 	}
@@ -100,6 +112,8 @@ public class Internship implements Serializable{
 		}
 		internship.setSchedule(scheduleI);
 	}
+	
+	
 	
 
 	

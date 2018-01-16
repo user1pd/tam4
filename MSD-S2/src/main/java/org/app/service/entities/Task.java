@@ -28,13 +28,14 @@ public class Task implements Serializable{
 	@ManyToOne 
 	private Internship internship;
 	
-
-
-
-	public static String BASE_URL = "http://localhost:8080/MSD-S2/data/tasks/";
+//....................REST Resource URL
+	public static String BASE_URL = Project.BASE_URL;
 	@XmlElement(name="link") 
 	public AtomLink getLink() throws Exception{
-		String restUrl = BASE_URL + this.getIdTask();
+		String restUrl = BASE_URL
+				+this.getProject().getIdProject()
+				+"/tasks/"
+				+ this.getIdTask();
 		return new AtomLink(restUrl, "get-task");
 	}
 	
@@ -59,18 +60,21 @@ public class Task implements Serializable{
 	public void setName(String name) {
 		this.name = name;
 	}
+	@XmlElement()
 	public String getEvolution() {
 		return evolution;
 	}
 	public void setEvolution(String evolution) {
 		this.evolution = evolution;
 	}
+	@XmlElement()
 	public Integer getEvaluation() {
 		return evaluation;
 	}
 	public void setEvaluation(Integer evaluation) {
 		this.evaluation = evaluation;
 	}	
+	@XmlElement()
 	public Internship getInternship() {
 		return internship;
 	}

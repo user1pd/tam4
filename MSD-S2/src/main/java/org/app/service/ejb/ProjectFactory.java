@@ -12,7 +12,7 @@ import org.app.service.entities.Task;
 
 @Singleton
 public class ProjectFactory {
-	@TransactionAttribute(TransactionAttributeType.SUPPORTS) // propagate transaction
+	@TransactionAttribute(TransactionAttributeType.SUPPORTS) 
 	public static Project buildProiect(Integer projectID, String name, Integer taskCount){
 		
 		Project project = new Project(projectID, name + "." + projectID , new Date());

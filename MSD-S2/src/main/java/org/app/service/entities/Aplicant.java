@@ -8,8 +8,9 @@ import javax.persistence.*;
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlElement;
+import javax.xml.bind.annotation.XmlElementWrapper;
 import javax.xml.bind.annotation.XmlRootElement;
-@XmlRootElement(name="employee")
+@XmlRootElement(name="aplicant")
 @XmlAccessorType(XmlAccessType.NONE)
 @Entity
 public class Aplicant extends Person implements Serializable {
@@ -18,17 +19,6 @@ public class Aplicant extends Person implements Serializable {
 	
 	@OneToMany (mappedBy="aplicant", cascade = CascadeType.ALL, fetch = FetchType.EAGER, orphanRemoval=false)
 	private List<Internship> internships = new ArrayList<>();
-	
-	public static String BASE_URL = "http://localhost:8080/MSD-S2/data/employees/";
-	@XmlElement(name="link") 
-	public AtomLink getLink() throws Exception{
-		String restUrl = BASE_URL + this.getIdPerson();
-		return new AtomLink(restUrl, "get-employee");
-	}
-	
-	public void setLink(AtomLink link) {
-		
-	}
 	
 	
 //---------------get & set------------------------
@@ -49,7 +39,7 @@ public class Aplicant extends Person implements Serializable {
 	public void setDepartment(String department) {
 		this.department = department;
 	}
-
+	@XmlElementWrapper(name="internships") @XmlElement(name="internship")
 	public List<Internship> getInternships() {
 		return internships;
 	}
@@ -71,6 +61,17 @@ public class Aplicant extends Person implements Serializable {
 		this.department = department;
 		this.university = university;
 	}
+	
+
+	/* Rest Resource URL*/
+	public static String BASE_URL = "http://localhost:8080/MSD-S2/data/aplicants/";
+	@XmlElement(name = "link")
+    public AtomLink getLink() throws Exception {
+		String restUrl = BASE_URL + this.getIdPerson();
+        return new AtomLink(restUrl, "get-aplicant");
+    }	
+	
+	public void setLink(AtomLink link){}
 
 
 

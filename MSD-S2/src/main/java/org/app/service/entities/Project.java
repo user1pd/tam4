@@ -14,7 +14,13 @@ import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
-
+import javax.xml.bind.annotation.XmlAccessType;
+import javax.xml.bind.annotation.XmlAccessorType;
+import javax.xml.bind.annotation.XmlElement;
+import javax.xml.bind.annotation.XmlElementWrapper;
+import javax.xml.bind.annotation.XmlRootElement;
+@XmlRootElement(name="project")
+@XmlAccessorType(XmlAccessType.NONE) 
 @Entity
 public class Project implements Serializable{
 	@Id	
@@ -34,42 +40,49 @@ public class Project implements Serializable{
 	
 	
 //---------------get & set------------------------
+	@XmlElement()
 	public Integer getIdProject() {
 		return idProject;
 	}
 	public void setIdProject(Integer idProject) {
 		this.idProject = idProject;
 	}
+	@XmlElement()
 	public Date getStartDate() {
 		return startDate;
 	}
 	public void setStartDate(Date startDate) {
 		this.startDate = startDate;
 	}
+	@XmlElement()
 	public Date getEndDate() {
 		return endDate;
 	}
 	public void setEndDate(Date endDate) {
 		this.endDate = endDate;
 	}
+	@XmlElement()
 	public String getDescription() {
 		return description;
 	}
 	public void setDescription(String description) {
 		this.description = description;
 	}
+	@XmlElement()
 	public Employee getTeamLeader() {
 		return teamLeader;
 	}
 	public void setTeamLeader(Employee teamLeader) {
 		this.teamLeader = teamLeader;
 	}
+	@XmlElementWrapper(name="tasks") @XmlElement(name="task")
 	public List<Task> getTasks() {
 		return tasks;
 	}
 	public void setTasks(List<Task> tasks) {
 		this.tasks = tasks;
 	}
+	@XmlElement()
 	public String getName() {
 		return name;
 	}
@@ -143,7 +156,16 @@ public Project(Integer id) {
 	
 	
 	
+	/* Rest Resource URL*/
+	public static String BASE_URL = "http://localhost:8080/MSD-S2/data/projects/";
+	@XmlElement(name = "link")
+    public AtomLink getLink() throws Exception {
+		String restUrl = BASE_URL 
+				+ this.getIdProject();
+        return new AtomLink(restUrl, "get-project");
+    }	
 	
+	public void setLink(AtomLink link){}
 	
 	
 	
