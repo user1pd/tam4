@@ -10,60 +10,61 @@ import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 
-import org.app.patterns.EntityRepositoryBase;
 import org.app.service.entities.Aplicant;
-import org.app.service.entities.Project;
 
 @Stateless @LocalBean
 public class AplicantServiceEJB  implements AplicantService{
 	
 	private static Logger logger = Logger.getLogger(AplicantServiceEJB.class.getName());
 
-
-	/* DataService initialization */
 	// Inject resource 
 	@PersistenceContext(unitName="MSD")
 	private EntityManager em;
 	
-	public AplicantServiceEJB() {
-		
+	public AplicantServiceEJB() {		
 	}
-	// Init after constructor
+	
 	@PostConstruct
 	public void init(){
 		logger.info("POSTCONSTRUCT-INIT : " + this.em);
 	}		
-
+	
+	//..CRUD implementation............................
+	//.................................................
 	@Override
-	public Aplicant addAplicant(Aplicant AplicantToAdd) {
-		em.persist(AplicantToAdd);
+	public Aplicant addAplicant(Aplicant aplicantToAdd) {
+		em.persist(aplicantToAdd);
 		em.flush();
-		// transactions are managed by default by container
-		em.refresh(AplicantToAdd);
-		return AplicantToAdd;
+		em.refresh(aplicantToAdd);
+		return aplicantToAdd;
 	}
 
 	@Override
-	public String removeAplicant(Aplicant AplicantToDelete) {
-		AplicantToDelete = em.merge(AplicantToDelete);
-		em.remove(AplicantToDelete);
+	public String removeAplicant(Aplicant aplicantToDelete) {
+		aplicantToDelete = em.merge(aplicantToDelete);
+		em.remove(aplicantToDelete);
 		em.flush();
 		return "True";
 	}
 
 	@Override
-	public Aplicant getAplicantByAplicantId(Integer idPerson) {
-		return em.find(Aplicant.class, idPerson);
+	public Aplicant getAplicantById(Integer id) {
+		return em.find(Aplicant.class, id);
 	}
 
 	@Override
-	public Collection<Aplicant> getAplicants() {
-		List<Aplicant> Aplicants = em.createQuery("SELECT a FROM Aplicant a ", Aplicant.class)
+	public List<Aplicant> getAplicants() {
+		List<Aplicant> aplicants = em.createQuery("SELECT a FROM Aplicant a ", Aplicant.class)
 				.getResultList();
-		return Aplicants;
+		return aplicants;
 	}
-
 	
+	@Override
+	public Aplicant getAplicantByName(String name) {
+		return em.createQuery("SELECT a FROM Aplicant a WHERE a.name= :name", Aplicant.class)
+				.setParameter("name",name)
+				.getSingleResult();
+	}	
 
 	@Override
 	public String getMessage() {

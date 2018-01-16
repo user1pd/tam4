@@ -1,6 +1,5 @@
 package org.app.service.ejb;
 
-import java.util.Collection;
 import java.util.List;
 import java.util.logging.Logger;
 
@@ -24,8 +23,7 @@ public class InternshipServiceEJB implements InternshipService {
 	@PersistenceContext(unitName="MSD")
 	private EntityManager em;
 	
-	public InternshipServiceEJB() {
-		
+	public InternshipServiceEJB() {		
 	}
 	// Init after constructor
 	@PostConstruct
@@ -37,7 +35,6 @@ public class InternshipServiceEJB implements InternshipService {
 	public Internship addInternship(Internship internshipToAdd) {
 		em.persist(internshipToAdd);
 		em.flush();
-		// transactions are managed by default by container
 		em.refresh(internshipToAdd);
 		return internshipToAdd;
 	}
@@ -51,12 +48,12 @@ public class InternshipServiceEJB implements InternshipService {
 	}
 
 	@Override
-	public Internship getInternshipByInternshipId(Integer idInternship) {
+	public Internship getInternshipById(Integer idInternship) {
 		return em.find(Internship.class, idInternship);
 	}
 
 	@Override
-	public Collection<Internship> getInternships() {
+	public List<Internship> getInternships() {
 		List<Internship> internships = em.createQuery("SELECT i FROM Internship i ", Internship.class)
 				.getResultList();
 		return internships;
@@ -70,8 +67,14 @@ public class InternshipServiceEJB implements InternshipService {
 	}
 	
 	@Override
-	public Aplicant getAplicantByAplicantId(Integer idPerson) {
+	public Aplicant getAplicantById(Integer idPerson) {
 		return em.find(Aplicant.class, idPerson);
+	}
+	@Override
+	public List<Aplicant> getAplicants() {
+		List<Aplicant> aplicants = em.createQuery("SELECT a FROM Aplicant a ", Aplicant.class)
+				.getResultList();
+		return aplicants;
 	}
 
 }

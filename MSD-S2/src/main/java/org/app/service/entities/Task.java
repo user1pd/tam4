@@ -16,7 +16,7 @@ import javax.xml.bind.annotation.XmlRootElement;
 @XmlAccessorType(XmlAccessType.NONE)
 @Entity
 public class Task implements Serializable{
-	@Id	
+	@Id	@GeneratedValue(strategy=GenerationType.AUTO)
 	private Integer idTask;
 	
 	private String name;

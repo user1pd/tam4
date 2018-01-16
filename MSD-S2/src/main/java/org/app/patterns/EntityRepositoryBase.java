@@ -215,6 +215,7 @@ public class EntityRepositoryBase<T extends Object> implements EntityRepository<
 		try {
 			entity = em.merge(entity);
 			em.remove(entity);
+			em.flush();
 //			em.getTransaction().commit();
 			return true;
 		} catch (Exception e) {
@@ -223,6 +224,7 @@ public class EntityRepositoryBase<T extends Object> implements EntityRepository<
 			return false;
 		} finally {
 			// em.close();
+			
 		}
 	}
 

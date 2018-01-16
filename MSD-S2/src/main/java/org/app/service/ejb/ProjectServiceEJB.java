@@ -11,6 +11,7 @@ import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 
 import org.app.service.entities.Project;
+import org.app.service.entities.Task;
 
 @Stateless @LocalBean
 public class ProjectServiceEJB implements ProjectService{
@@ -50,12 +51,16 @@ public class ProjectServiceEJB implements ProjectService{
 	}
 
 	@Override
-	public Project getProjectByProjectId(Integer idProject) {
-		return em.find(Project.class, idProject);
+	public Project getProjectById(Integer id) {
+		return em.find(Project.class, id);
+	}
+	@Override
+	public Task getTaskById(Integer id) {
+		return em.find(Task.class, id);
 	}
 
 	@Override
-	public Collection<Project> getProjects() {
+	public List<Project> getProjects() {
 		List<Project> Projects = em.createQuery("SELECT a FROM Project a ", Project.class)
 				.getResultList();
 		return Projects;

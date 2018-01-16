@@ -11,7 +11,6 @@ import javax.ejb.EJB;
 
 import org.app.service.ejb.EmployeeService;
 import org.app.service.ejb.EmployeeServiceEJB;
-import org.app.service.entities.Aplicant;
 import org.app.service.entities.Employee;
 import org.jboss.arquillian.container.test.api.Deployment;
 import org.jboss.arquillian.junit.Arquillian;
@@ -37,7 +36,8 @@ public class TestEmployeeServiceEJBArq {
 		return ShrinkWrap
 				.create(WebArchive.class, "msd-test.war")
 				.addPackage(Employee.class.getPackage())
-				.addClass(EmployeeService.class).addClass(EmployeeServiceEJB.class)
+				.addClass(EmployeeService.class)
+				.addClass(EmployeeServiceEJB.class)
 				.addAsResource("META-INF/persistence.xml")
 				.addAsManifestResource(EmptyAsset.INSTANCE, "beans.xml");
 	}
@@ -46,17 +46,29 @@ public class TestEmployeeServiceEJBArq {
 	public void test1_GetMessage() {
 		logger.info("DEBUG: Junit TESTING: getMessage ...");
 		String response = service.getMessage();
-		assertNotNull("Employee Service failed!", response);
+		assertNotNull("Data Service failed!", response);
 		logger.info("DEBUG: EJB Response ..." + response);
 	}
+	
+	@Test
+	public void test2_DeleteEmployee() {
+		logger.info("DEBUG: Junit TESTING: testDeleteEmployees ...");
+
+		Collection<Employee> Employees = service.getEmployees();
+		for (Employee i : Employees)
+			service.removeEmployee(i);
+		Collection<Employee> EmployeesAfterDelete = service.getEmployees();
+		assertTrue("Fail to read Employees!", EmployeesAfterDelete.size() == 0);
+  }
 
 	@Test
 	public void test3_AddEmployee() {
 		logger.info("DEBUG: Junit TESTING: testAddEmployee ...");
 
 		Integer EmployeesToAdd = 3;
+		Integer id=2000;
 		for (int i = 1; i <= EmployeesToAdd; i++) {
-			service.addEmployee(new Employee(2000+i, "Person"+(2000+i), "mail"+(2000+i)+"a@dam.com", "075193"+(2000+i), new Date(), "user"+(2000+i)+"a", "password"+(2000+i)));			
+			service.addEmployee(new Employee(id+i, "Person."+(id+i), "mail"+(id+i)+"a@dam.com", "075193"+(id+i), new Date(), "user"+(id+i)+"a", "password"+(id+i)));			
 		}
 		Collection<Employee> Employees = service.getEmployees();
 		assertTrue("Fail to add Employees!", Employees.size() == EmployeesToAdd);
@@ -70,15 +82,5 @@ public class TestEmployeeServiceEJBArq {
 		assertTrue("Fail to read Employees!", Employees.size() > 0);
 	}
 
-	@Test
-	public void test2_DeleteEmployee() {
-		logger.info("DEBUG: Junit TESTING: testDeleteEmployees ...");
-
-		Collection<Employee> Employees = service.getEmployees();
-		for (Employee i : Employees)
-			service.removeEmployee(i);
-		Collection<Employee> EmployeesAfterDelete = service.getEmployees();
-		assertTrue("Fail to read Employees!", EmployeesAfterDelete.size() == 0);
-  }
 
 }

@@ -1,6 +1,5 @@
 package org.app.service.ejb;
 
-import java.util.Collection;
 import java.util.List;
 import java.util.logging.Logger;
 
@@ -10,6 +9,7 @@ import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 
+import org.app.service.entities.Internship;
 import org.app.service.entities.Schedule;
 
 @Stateless @LocalBean
@@ -50,12 +50,12 @@ public class ScheduleServiceEJB implements ScheduleService{
 	}
 
 	@Override
-	public Schedule getScheduleByScheduleId(Integer idPerson) {
+	public Schedule getScheduleById(Integer idPerson) {
 		return em.find(Schedule.class, idPerson);
 	}
 
 	@Override
-	public Collection<Schedule> getSchedules() {
+	public List<Schedule> getSchedules() {
 		List<Schedule> Schedules = em.createQuery("SELECT a FROM Schedule a ", Schedule.class)
 				.getResultList();
 		return Schedules;
@@ -66,5 +66,11 @@ public class ScheduleServiceEJB implements ScheduleService{
 	@Override
 	public String getMessage() {
 		return "SchedulesServiceEJB is ON... ";
+	}
+	@Override
+	public List<Internship> getInternships() {
+		List<Internship> internships = em.createQuery("SELECT i FROM Internship i ", Internship.class)
+				.getResultList();
+		return internships;
 	}
 }

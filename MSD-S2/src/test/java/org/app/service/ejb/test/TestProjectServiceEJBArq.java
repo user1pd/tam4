@@ -36,7 +36,8 @@ public class TestProjectServiceEJBArq {
 		return ShrinkWrap
 				.create(WebArchive.class, "msd-test.war")
 				.addPackage(Project.class.getPackage())
-				.addClass(ProjectService.class).addClass(ProjectServiceEJB.class)
+				.addClass(ProjectService.class)
+				.addClass(ProjectServiceEJB.class)
 				.addAsResource("META-INF/persistence.xml")
 				.addAsManifestResource(EmptyAsset.INSTANCE, "beans.xml");
 	}
@@ -45,29 +46,8 @@ public class TestProjectServiceEJBArq {
 	public void test1_GetMessage() {
 		logger.info("DEBUG: Junit TESTING: getMessage ...");
 		String response = service.getMessage();
-		assertNotNull("Project Service failed!", response);
+		assertNotNull("Data Service failed!", response);
 		logger.info("DEBUG: EJB Response ..." + response);
-	}
-
-	@Test
-	public void test3_AddProject() {
-		logger.info("DEBUG: Junit TESTING: testAddProject ...");
-
-		Integer ProjectToAdd = 3;
-		Integer id=6000;
-		for (int i = 1; i <= ProjectToAdd; i++) {
-			service.addProject(new Project(id+i, "P"+i, new Date()));
-		}
-		Collection<Project> Projects = service.getProjects();
-		assertTrue("Fail to add Projects!", Projects.size() == ProjectToAdd);
-	}
-
-	@Test
-	public void test4_GetProjects() {
-		logger.info("DEBUG: Junit TESTING: testGetProjects ...");
-
-		Collection<Project> Projects = service.getProjects();
-		assertTrue("Fail to read Projects!", Projects.size() > 0);
 	}
 
 	@Test
@@ -80,5 +60,42 @@ public class TestProjectServiceEJBArq {
 		Collection<Project> ProjectsAfterDelete = service.getProjects();
 		assertTrue("Fail to read Projects!", ProjectsAfterDelete.size() == 0);
   }
+	//adauga proiecte fara taskuri
+	@Test
+	public void test3a_AddProject() {
+		logger.info("DEBUG: Junit TESTING: testAddProject ...");
+
+		Integer ProjectToAdd = 3;
+		Integer id=4000;
+		for (int i = 1; i <= ProjectToAdd; i++) {
+			service.addProject(new Project(id+i, "Pr."+(id+i), new Date()));
+		}
+		List<Project> Projects = service.getProjects();
+		assertTrue("Fail to add Projects!", Projects.size() == ProjectToAdd);
+	}
+	
+	//adauga proiecte cu taskuri
+		@Test
+		public void test3b_AddProject() {
+			logger.info("DEBUG: Junit TESTING: testAddProject ...");
+
+			Integer projectsToAdd = 3;
+			Integer tasksToAdd=2;
+			Integer id=5000;
+			for (int i = 1; i <= projectsToAdd; i++) {
+				service.addProject(new Project(id+i, "Pr."+(id+i), new Date(), tasksToAdd));
+			}
+			Collection<Project> Projects = service.getProjects();
+//			assertTrue("Fail to add Projects!", Projects.size() == projectsToAdd);
+		}
+
+	@Test
+	public void test4_GetProjects() {
+		logger.info("DEBUG: Junit TESTING: testGetProjects ...");
+
+		Collection<Project> Projects = service.getProjects();
+		assertTrue("Fail to read Projects!", Projects.size() > 0);
+	}
+
 
 }

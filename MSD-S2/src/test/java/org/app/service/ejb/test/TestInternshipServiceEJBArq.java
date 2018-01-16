@@ -10,10 +10,10 @@ import java.util.logging.Logger;
 import javax.ejb.EJB;
 
 import org.app.service.ejb.AplicantService;
+import org.app.service.ejb.AplicantServiceEJB;
 import org.app.service.ejb.InternshipService;
 import org.app.service.ejb.InternshipServiceEJB;
 import org.app.service.entities.Aplicant;
-import org.app.service.entities.Employee;
 import org.app.service.entities.Internship;
 import org.jboss.arquillian.container.test.api.Deployment;
 import org.jboss.arquillian.junit.Arquillian;
@@ -31,16 +31,18 @@ import org.junit.runners.MethodSorters;
 public class TestInternshipServiceEJBArq {
 	private static Logger logger = Logger.getLogger(TestInternshipServiceEJBArq.class.getName());
 
-	@EJB // EJB DataService Ref
+	@EJB 
 	private static InternshipService service;
-	
 
 	@Deployment // Arquilian infrastructure
 	public static Archive<?> createDeployment() {
 		return ShrinkWrap
 				.create(WebArchive.class, "msd-test.war")
 				.addPackage(Internship.class.getPackage())
-				.addClass(InternshipService.class).addClass(InternshipServiceEJB.class)
+				.addClass(InternshipService.class)
+				.addClass(InternshipServiceEJB.class)
+				.addClass(AplicantService.class)
+				.addClass(AplicantServiceEJB.class)
 				.addAsResource("META-INF/persistence.xml")
 				.addAsManifestResource(EmptyAsset.INSTANCE, "beans.xml");
 	}
@@ -49,22 +51,34 @@ public class TestInternshipServiceEJBArq {
 	public void test1_GetMessage() {
 		logger.info("DEBUG: Junit TESTING: getMessage ...");
 		String response = service.getMessage();
-		assertNotNull("Internship Service failed!", response);
+		assertNotNull("Data Service failed!", response);
 		logger.info("DEBUG: EJB Response ..." + response);
 	}
 
+	@Test
+	public void test2_DeleteInternship() {
+		logger.info("DEBUG: Junit TESTING: testDeleteInternships ...");
+
+		Collection<Internship> internships = service.getInternships();
+		for (Internship i : internships)
+			service.removeInternship(i);
+		Collection<Internship> internshipsAfterDelete = service.getInternships();
+		assertTrue("Fail to read Internships!", internshipsAfterDelete.size() == 0);
+  }
 	@Test
 	public void test3_AddInternship() {
 		logger.info("DEBUG: Junit TESTING: testAddInternship ...");
 
 		Integer internshipToAdd = 3;
-		Integer id=3000;
-		Aplicant aplicantToHire=service.getAplicantByAplicantId(1001);
-				
+		Integer id=3000;	
+		Aplicant aplicant=service.getAplicants().get(0);
+		
 		for (int i = 1; i <= internshipToAdd; i++) {
-			service.addInternship(new Internship(id+i, new Date(), new Date(), aplicantToHire));
-		}
+			service.addInternship(new Internship(null, new Date(), new Date(), aplicant));
+		}		
+		
 		Collection<Internship> internships = service.getInternships();
+		aplicant.getInternships().addAll(internships);
 		assertTrue("Fail to add Internships!", internships.size() == internshipToAdd);
 	}
 
@@ -77,15 +91,5 @@ public class TestInternshipServiceEJBArq {
 	}
 
 
-	@Test
-	public void test2_DeleteInternship() {
-		logger.info("DEBUG: Junit TESTING: testDeleteInternships ...");
-
-		Collection<Internship> internships = service.getInternships();
-		for (Internship i : internships)
-			service.removeInternship(i);
-		Collection<Internship> internshipsAfterDelete = service.getInternships();
-		assertTrue("Fail to read Internships!", internshipsAfterDelete.size() == 0);
-  }
 }
 /* http://localhost:8080/SCRUM-S2/data/Client */

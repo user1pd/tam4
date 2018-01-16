@@ -1,22 +1,17 @@
+
 package org.app.service.entities;
 
 import java.io.Serializable;
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.Date;
 import java.util.List;
-import java.util.Random;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Entity;
-import javax.persistence.EntityManager;
 import javax.persistence.FetchType;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
-import javax.persistence.PersistenceContext;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 
@@ -95,25 +90,58 @@ public class Project implements Serializable{
 		super();
 	}
 	
-	public Project(Integer idProject, String name, Date startDate) {
+public Project(Integer id) {
+		
+		this.idProject = id;
+}
+	
+	public Project(Integer id, String name, Date start) {
+		
+		this.idProject = id;
+		this.name = name;
+		this.startDate = start;
+	}
+	
+	
+	public Project(Integer idProject, String name, Date startDate, Integer tasksCounter) {
 		super();
 		this.idProject = idProject;
 		this.name = name;
 		this.startDate = startDate;
+		List<Task> tasksP=new ArrayList<>();
+		
+		for(int i=1; i<=tasksCounter-1; i++) {
+			tasksP.add(new Task(null, "T: " + this.getIdProject() + "." + i, this));			
+		}
+		this.setTasks(tasksP);
 	}
 	
 	//--------------------------------------------
-	
-	public Project buildProject(Integer idProject, String name, Date startDate, Integer tasksCounter) {
-		Project project= new Project(idProject, name+"."+idProject, new Date());
-		List<Task> tasksP=new ArrayList<>();
-		
-		for(int i=0; i<=tasksCounter; i++) {
-			tasksP.add(new Task(9100+i, "Task."+(9100+i), project));			
-		}
-		project.setTasks(tasksP);
-		return project;
+	@Override
+	public int hashCode() {
+		final int prime = 31;
+		int result = 1;
+		result = prime * result + ((idProject == null) ? 0 : idProject.hashCode());
+		return result;
 	}
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (obj == null)
+			return false;
+		if (getClass() != obj.getClass())
+			return false;
+		Project other = (Project) obj;
+		if (idProject == null) {
+			if (other.idProject != null)
+				return false;
+		} else if (!idProject.equals(other.idProject))
+			return false;
+		return true;
+	}
+	
+	
 	
 	
 	

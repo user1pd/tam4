@@ -1,6 +1,6 @@
 package org.app.service.ejb;
 
-import java.util.Collection;
+import java.util.List;
 
 import javax.ejb.Remote;
 
@@ -13,13 +13,17 @@ public interface InternshipService {
 		// create or update
 	   Internship addInternship(Internship internshipToAdd);
 	   
+	   //delete
 	   String removeInternship(Internship internshipToDelete);
 	   
-       Internship getInternshipByInternshipId(Integer internshipId);
-       Collection<Internship> getInternships();
+	   //read
+       Internship getInternshipById(Integer internshipId);
+       List<Internship> getInternships();
        
+       //others
        String getMessage();
 
-	Aplicant getAplicantByAplicantId(Integer idPerson);
+       Aplicant getAplicantById(Integer idPerson);
+       List<Aplicant> getAplicants();
 
 }

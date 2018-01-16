@@ -23,73 +23,75 @@ import javax.ws.rs.core.MediaType;
 
 import org.app.patterns.EntityRepositoryBase;
 import org.app.service.entities.Employee;
-import org.app.service.entities.Task;
 @Path("employees")
 @Stateless @LocalBean
-public class EmployeeServiceEJB  extends EntityRepositoryBase<Employee> implements EmployeeService{
-
+public class EmployeeServiceEJB  
+//extends EntityRepositoryBase<Employee> 
+implements EmployeeService{
 	private static Logger logger = Logger.getLogger(EmployeeServiceEJB.class.getName());
-	@Override
-	@GET 					/* MSD-S2/rest/employees 		REST-resource: employee-collection*/
-	@Produces({ MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON })
-	public Collection<Employee> toCollection() {
-		logger.info("**** DEBUG REST toCollection()");
-		return super.toCollection();
-	}
-	@Override
-	@GET @Path("/{id}") 	/* MSD-S2/rest/employees/data/{id} 	REST-resource: employee-entity*/
-	@Produces({ MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON })
-	public Employee getById(@PathParam("id") Integer id) {
-		Employee employee = super.getById(id);
-		logger.info("**** DEBUG REST getById(" + id +") = " + employee);
-		return employee;
-	}
 	
-	@POST 					/* MSD-S2/rest/tasks 		REST-resource: tasks-collection*/
-	@Consumes({ MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON })
-	@Produces({ MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON })	
-	public Collection<Employee> addIntoCollection(Employee employee) {
-		// save aggregate
-		super.add(employee);
-		logger.info("**** DEBUG REST save aggregate POST");
-		// return updated collection
-		return super.toCollection();
-	}
+//	@Override
+//	@GET 					/* MSD-S2/rest/employees 		REST-resource: employee-collection*/
+//	@Produces({ MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON })
+//	public Collection<Employee> toCollection() {
+//		logger.info("**** DEBUG REST toCollection()");
+//		return super.toCollection();
+//	}
+//	@Override
+//	@GET @Path("/{id}") 	/* MSD-S2/rest/employees/data/{id} 	REST-resource: employee-entity*/
+//	@Produces({ MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON })
+//	public Employee getById(@PathParam("id") Integer id) {
+//		Employee employee = super.getById(id);
+//		logger.info("**** DEBUG REST getById(" + id +") = " + employee);
+//		return employee;
+//	}
+//	
+//	@POST 					/* MSD-S2/rest/tasks 		REST-resource: tasks-collection*/
+//	@Consumes({ MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON })
+//	@Produces({ MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON })	
+//	public Collection<Employee> addIntoCollection(Employee employee) {
+//		// save aggregate
+//		super.add(employee);
+//		logger.info("**** DEBUG REST save aggregate POST");
+//		// return updated collection
+//		return super.toCollection();
+//	}
+//	
+//	@DELETE 				/* MSD-S2/rest/tasks 		REST-resource: tasks-collection*/
+//	@Consumes({ MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON })	
+//	@Produces({ MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON })
+//	@TransactionAttribute(TransactionAttributeType.REQUIRES_NEW) // autonomous transaction
+//	public Collection<Employee> removeFromCollection(Employee employee) {
+//		logger.info("DEBUG: called REMOVE - project: " + employee);
+//		super.remove(employee);
+//		return super.toCollection();
+//	}
+//	
+//	
+//	@DELETE @Path("/{id}") 	/* MSD-S2/rest/tasks/{id} 	REST-resource: task-entity*/	
+//	@TransactionAttribute(TransactionAttributeType.REQUIRES_NEW) // autonomous transaction
+//	public void remove(@PathParam("id")Integer id) {
+//		logger.info("DEBUG: called REMOVE - ById() for employees >>>>>>>>>>>>>> simplified ! + id");
+//		Employee employee = super.getById(id);
+//		super.remove(employee);
+//	}
+//	
+//	@PUT @Path("/{id}") 	/* MSD-S2/rest/tasks/{id} 	REST-resource: task-entity*/	
+//	@Consumes({ MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON })
+//	@Produces({ MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON })	
+//	@TransactionAttribute(TransactionAttributeType.REQUIRES_NEW) // autonomous transaction
+//	@Override
+//	public Employee add(Employee employee) {
+//		// restore aggregation-relation
+//		
+//		//logger.info("**** DEBUG REST restore aggregation-relation PUT");
+//		// save aggregate
+//		//logger.info("**** DEBUG REST save aggregate PUT");
+//		employee = super.add(employee);
+//		// return updated collection	
+//		return employee;
+//	}
 	
-	@DELETE 				/* MSD-S2/rest/tasks 		REST-resource: tasks-collection*/
-	@Consumes({ MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON })	
-	@Produces({ MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON })
-	@TransactionAttribute(TransactionAttributeType.REQUIRES_NEW) // autonomous transaction
-	public Collection<Employee> removeFromCollection(Employee employee) {
-		logger.info("DEBUG: called REMOVE - project: " + employee);
-		super.remove(employee);
-		return super.toCollection();
-	}
-	
-	
-	@DELETE @Path("/{id}") 	/* MSD-S2/rest/tasks/{id} 	REST-resource: task-entity*/	
-	@TransactionAttribute(TransactionAttributeType.REQUIRES_NEW) // autonomous transaction
-	public void remove(@PathParam("id")Integer id) {
-		logger.info("DEBUG: called REMOVE - ById() for employees >>>>>>>>>>>>>> simplified ! + id");
-		Employee employee = super.getById(id);
-		super.remove(employee);
-	}
-	
-	@PUT @Path("/{id}") 	/* MSD-S2/rest/tasks/{id} 	REST-resource: task-entity*/	
-	@Consumes({ MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON })
-	@Produces({ MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON })	
-	@TransactionAttribute(TransactionAttributeType.REQUIRES_NEW) // autonomous transaction
-	@Override
-	public Employee add(Employee employee) {
-		// restore aggregation-relation
-		
-		//logger.info("**** DEBUG REST restore aggregation-relation PUT");
-		// save aggregate
-		//logger.info("**** DEBUG REST save aggregate PUT");
-		employee = super.add(employee);
-		// return updated collection	
-		return employee;
-	}
 	/* DataService initialization */
 	// Inject resource 
 	@PersistenceContext(unitName="MSD")
@@ -103,35 +105,43 @@ public class EmployeeServiceEJB  extends EntityRepositoryBase<Employee> implemen
 	public void init(){
 		logger.info("POSTCONSTRUCT-INIT : " + this.em);
 	}		
-
+	
+	//CRUD implementation...............................
+	//..................................................
 	@Override
 	public Employee addEmployee(Employee EmployeeToAdd) {
 		em.persist(EmployeeToAdd);
 		em.flush();
-		// transactions are managed by default by container
 		em.refresh(EmployeeToAdd);
 		return EmployeeToAdd;
 	}
 
 	@Override
-	public String removeEmployee(Employee EmployeeToDelete) {
-		EmployeeToDelete = em.merge(EmployeeToDelete);
-		em.remove(EmployeeToDelete);
+	public String removeEmployee(Employee employeeToDelete) {
+		employeeToDelete = em.merge(employeeToDelete);
+		em.remove(employeeToDelete);
 		em.flush();
 		return "True";
 	}
 
 	@Override
-	public Employee getEmployeeByEmployeeId(Integer idPerson) {
+	public Employee getEmployeeById(Integer idPerson) {
 		return em.find(Employee.class, idPerson);
 	}
 
 	@Override
-	public Collection<Employee> getEmployees() {
+	public List<Employee> getEmployees() {
 		List<Employee> Employees = em.createQuery("SELECT a FROM Employee a ", Employee.class)
 				.getResultList();
 		return Employees;
 	}
+	@Override
+	public Employee getEmployeeByName(String name) {
+		return em.createQuery("SELECT e FROM Employee e WHERE e.name = :name", Employee.class)
+				.setParameter("name", name)
+				.getSingleResult();
+	}
+	
 
 	@Override
 	public String getMessage() {

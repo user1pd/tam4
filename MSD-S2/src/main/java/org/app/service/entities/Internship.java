@@ -73,43 +73,32 @@ public class Internship implements Serializable{
 		this.tasks = tasks;
 	}
 	//------------------------------------------------------------------------------------------------
-	public Internship(Integer idInternship, Date internshipStartDate, Date internshipEndDate, Aplicant aplicant,
-			List<Schedule> schedule, List<Task> tasks) {
-		super();
-		this.idInternship = idInternship;
-		this.internshipStartDate = internshipStartDate;
-		this.internshipEndDate = internshipEndDate;
-		this.aplicant = aplicant;
-		this.schedule = schedule;
-		this.tasks = tasks;
-	}
 	public Internship() {
 		super();
 	}
-	public Internship(Integer idInternship, Date internshipStartDate, Date internshipEndDate, Aplicant aplicant) {
+	public Internship(Integer id, Date start, Date end, Aplicant aplicant) {
 		super();
-		this.idInternship = idInternship;
-		this.internshipStartDate = internshipStartDate;
-		this.internshipEndDate = internshipEndDate;
+		this.idInternship = id;
+		this.internshipStartDate = start;
+		this.internshipEndDate = end;
 		this.aplicant = aplicant;
 	}
-	public Internship(Integer idInternship, Date internshipStartDate, Date internshipEndDate) {
+	public Internship(Integer id, Date start, Date end) {
 		super();
-		this.idInternship = idInternship;
-		this.internshipStartDate = internshipStartDate;
-		this.internshipEndDate = internshipEndDate;
+		this.idInternship = id;
+		this.internshipStartDate = start;
+		this.internshipEndDate = end;
 	}
-	//------------------------------------------------------------------------------------------------
-	public Internship buildInternship(Integer id, Date start, Date end, Integer daysNr) {
+
+	public  Internship(Integer id, Date start, Date end, Integer daysSch) {
 		
 		Internship internship=new Internship(id, start, end);
 		List<Schedule> scheduleI=new ArrayList<>();
 		
-		for (int i=0; i<=daysNr;i++) {
+		for (int i=1; i<=daysSch-1;i++) {
 			scheduleI.add(new Schedule(null, i, "10:00", "16:00", internship));
 		}
 		internship.setSchedule(scheduleI);
-		return internship;
 	}
 	
 

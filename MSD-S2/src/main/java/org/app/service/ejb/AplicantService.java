@@ -1,20 +1,26 @@
 package org.app.service.ejb;
 
-import java.util.Collection;
+
+import java.util.List;
+
 import javax.ejb.Remote;
 
-import org.app.patterns.EntityRepository;
 import org.app.service.entities.Aplicant;
-import org.app.service.entities.Project;
 @Remote
 public interface AplicantService {
 	
 	// create or update
-   Aplicant addAplicant(Aplicant AplicantToAdd);	   
-   String removeAplicant(Aplicant AplicantToDelete);
-	   
-    Aplicant getAplicantByAplicantId(Integer AplicantId);
-    Collection<Aplicant> getAplicants();
+   Aplicant addAplicant(Aplicant aplicantToAdd);	
+   
+   //delete
+   String removeAplicant(Aplicant aplicantToDelete);
+	
+   //read
+    Aplicant getAplicantById(Integer aplicantId);
+    List<Aplicant> getAplicants();
+    
+    //custom read
+    Aplicant getAplicantByName(String aplicantName);
     
     String getMessage();
 

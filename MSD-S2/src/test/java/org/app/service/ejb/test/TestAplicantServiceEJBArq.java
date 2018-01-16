@@ -29,7 +29,7 @@ public class TestAplicantServiceEJBArq {
 	
 	private static Logger logger = Logger.getLogger(TestAplicantServiceEJBArq.class.getName());
 
-	@EJB // EJB DataService Ref
+	@EJB
 	private static AplicantService service;
 
 	@Deployment // Arquilian infrastructure
@@ -37,7 +37,8 @@ public class TestAplicantServiceEJBArq {
 		return ShrinkWrap
 				.create(WebArchive.class, "msd-test.war")
 				.addPackage(Aplicant.class.getPackage())
-				.addClass(AplicantService.class).addClass(AplicantServiceEJB.class)
+				.addClass(AplicantService.class)
+				.addClass(AplicantServiceEJB.class)
 				.addAsResource("META-INF/persistence.xml")
 				.addAsManifestResource(EmptyAsset.INSTANCE, "beans.xml");
 	}
@@ -46,21 +47,34 @@ public class TestAplicantServiceEJBArq {
 	public void test1_GetMessage() {
 		logger.info("DEBUG: Junit TESTING: getMessage ...");
 		String response = service.getMessage();
-		assertNotNull("Aplicant Service failed!", response);
+		assertNotNull("Data Service failed!", response);
 		logger.info("DEBUG: EJB Response ..." + response);
+	}
+	
+	@Test
+	public void test2_DeleteAplicant() {
+		logger.info("DEBUG: Junit TESTING: testDeleteAplicant ...");
+
+		Collection<Aplicant> Aplicants = service.getAplicants();
+		for (Aplicant a : Aplicants)
+			service.removeAplicant(a);
+		Collection<Aplicant> AplicantsAfterDelete = service.getAplicants();
+		assertTrue("Fail to read Aplicants!", AplicantsAfterDelete.size() == 0);
+//		Aplicant a=service.getAplicantById(1001);
+//		service.removeAplicant(a);
 	}
 
 	@Test
 	public void test3_AddAplicant() {
 		logger.info("DEBUG: Junit TESTING: testAddAplicant ...");
 
-		Integer AplicantsToAdd = 3;
+		Integer aplicantsToAdd = 3;
 		Integer id=1000;
-		for (int i = 1; i <= AplicantsToAdd; i++) {
-			service.addAplicant(new Aplicant(id+i, "Person "+id+i, "mail"+id+i+"a@dam.com", "07513"+id+i, new Date(), "user"+id+i+"a", "password"+id+i,"FEAA", "UAIC"));
+		for (int i = 1; i <= aplicantsToAdd; i++) {
+			service.addAplicant(new Aplicant(id+i, "Person."+(id+i), "mail"+(id+i)+"a@dam.com", "075163"+(id+i), new Date(), "user"+(id+i)+"a", "password"+(id+i),"FEAA", "UAIC"));
 		}
 		Collection<Aplicant> Aplicants = service.getAplicants();
-		assertTrue("Fail to add Aplicants!", Aplicants.size() == AplicantsToAdd);
+		assertTrue("Fail to add Aplicants!", Aplicants.size() == aplicantsToAdd);
 	}
 
 	@Test
@@ -70,16 +84,5 @@ public class TestAplicantServiceEJBArq {
 		Collection<Aplicant> Aplicants = service.getAplicants();
 		assertTrue("Fail to read Aplicants!", Aplicants.size() > 0);
 	}
-
-	@Test
-	public void test2_DeleteAplicant() {
-		logger.info("DEBUG: Junit TESTING: testDeleteAplicants ...");
-
-		Collection<Aplicant> Aplicants = service.getAplicants();
-		for (Aplicant a : Aplicants)
-			service.removeAplicant(a);
-		Collection<Aplicant> AplicantsAfterDelete = service.getAplicants();
-		assertTrue("Fail to read Aplicants!", AplicantsAfterDelete.size() == 0);
-  }
 
 }

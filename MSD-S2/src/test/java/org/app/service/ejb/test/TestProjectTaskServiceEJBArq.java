@@ -2,25 +2,22 @@ package org.app.service.ejb.test;
 
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertNull;
-import static org.junit.Assert.assertTrue;
 
-import java.util.ArrayList;
-import java.util.Collection;
 import java.util.List;
 import java.util.logging.Logger;
 
 import javax.ejb.EJB;
 
 import org.app.patterns.EntityRepository;
+import org.app.service.ejb.EmployeeService;
+import org.app.service.ejb.EmployeeServiceEJB;
+import org.app.service.ejb.ProjectService;
+import org.app.service.ejb.ProjectServiceEJB;
 import org.app.service.ejb.ProjectTaskService;
 import org.app.service.ejb.ProjectTaskServiceEJB;
-import org.app.service.ejb.ScheduleService;
-import org.app.service.ejb.ScheduleServiceEJB;
 import org.app.service.ejb.TaskService;
 import org.app.service.ejb.TaskServiceEJB;
-import org.app.service.entities.Aplicant;
 import org.app.service.entities.Project;
-import org.app.service.entities.Schedule;
 import org.app.service.entities.Task;
 import org.jboss.arquillian.container.test.api.Deployment;
 import org.jboss.arquillian.junit.Arquillian;
@@ -39,9 +36,8 @@ public class TestProjectTaskServiceEJBArq {
 	
 	private static Logger logger = Logger.getLogger(TestProjectTaskServiceEJBArq.class.getName());
 	
-	@EJB // Test EJB Data Service Reference is injected
-	private static ProjectTaskService service;	
-	private static TaskService servicet;	
+	@EJB 
+	private static ProjectTaskService service;
 	
 	// Arquilian infrastructure
 	@Deployment
@@ -50,8 +46,10 @@ public class TestProjectTaskServiceEJBArq {
                 .create(WebArchive.class, "msd-test.war")
                 .addPackage(EntityRepository.class.getPackage())
                 .addPackage(Project.class.getPackage())
-                .addClass(TaskService.class).addClass(TaskServiceEJB.class)
-                .addClass(ProjectTaskService.class).addClass(ProjectTaskServiceEJB.class)
+                .addClass(ProjectTaskService.class)
+                .addClass(ProjectTaskServiceEJB.class)
+                .addClass(EmployeeService.class)
+                .addClass(EmployeeServiceEJB.class)
                 .addAsResource("META-INF/persistence.xml")
                 .addAsManifestResource(EmptyAsset.INSTANCE, "beans.xml");
     }
@@ -65,48 +63,48 @@ public class TestProjectTaskServiceEJBArq {
 		assertNotNull("Data Service failed!", response);
 		logger.info("DEBUG: EJB Response ..." + response);
 	}
-	
+
 	@Test
 	public void test2_DeleteProject() {
-		logger.info("DEBUG: Junit TESTING: testDeleteProject 7002...");
-		Project project = service.getById(7002);  // !!!
-		
-		List<Task> tasks = project.getTasks();
-		
-//		for (Task i: tasks){
-//				servicet.removeTask(i);
-//		}
-			
+		logger.info("DEBUG: Junit TESTING: testDeleteProject 4001...");
+		Project project = service.getById(4010);  					
 		if (project != null)
-			service.remove(project)			
-			;
-		project = service.getById(7002);  // !!!
-		assertNull("Fail to delete Project 7002!", project);
-	}	
+			service.remove(project);
+		
+		project = service.getById(4010);  // !!!
+		assertNull("Fail to delete Project 4001!", project);
+	}
 	
-	/* CREATE Test 2: create aggregate*/
 	@Test
-	public void test3_CreateNewProject(){
-		Project project = service.createNewProject(7002);
+	public void test3_CreateNewProject(){		
+		Project project = service.createNewProject(4010);
 		assertNotNull("Fail to create new project in repository!", project);
-		// update project
-		project.setName(project.getName() + " - changed");		
-		List<Task> tasks = new ArrayList<Task>();
-		tasks = project.getTasks();
+		
+		// update project name
+		project.setName("NEW "+project.getName());	
+		//update project tasks attributes
+		List<Task> tasks = project.getTasks();
+		for(Task t:tasks) {
+			t.setEvolution("100% (completed)");
+			t.setEvaluation(10);
+		}	
+		project=service.add(project);
 				
-		project = service.add(project);
 		assertNotNull("Fail to save new project in repository!", project);
 		logger.info("DEBUG createNewProject: project changed: " + project);
 		// check read
-		project = service.getById(7002);  // !!!
+		project = service.getById(4010);  // !!!
 		assertNotNull("Fail to find changed project in repository!", project);
 		logger.info("DEBUG createNewProject: queried project" + project);
 	}	
+	
+	
+	
 	@Test
 	public void test4_GetProject() {
-		logger.info("DEBUG: Junit TESTING: testGetProject 7002 ...");
-		Project project = service.getById(7002);
-		assertNotNull("Fail to Get Project 7002!", project);
+		logger.info("DEBUG: Junit TESTING: testGetProject 4001 ...");
+		Project project = service.getById(4010);
+		assertNotNull("Fail to Get Project 4001!", project);
 	}
 		
 

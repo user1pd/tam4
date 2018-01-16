@@ -1,10 +1,10 @@
 package org.app.service.ejb;
 
 import java.util.Collection;
+import java.util.List;
 
 import javax.ejb.Remote;
 
-import org.app.patterns.EntityRepository;
 import org.app.service.entities.Project;
 import org.app.service.entities.Task;
 
@@ -12,15 +12,21 @@ import org.app.service.entities.Task;
 public interface TaskService  {
 
 	// create or update
-   Task addTask(Task TaskToAdd);	   
+   Task addTask(Task TaskToAdd);	 
+   
+   //delete
    String removeTask(Task TaskToDelete);
-	   
-    Task getTaskByTaskId(Integer TaskId);
-    Collection<Task> getTasks();
+   
+	//read   
+    Task getTaskById(Integer TaskId);
+    List<Task> getTasks();
     
+    //others
     String getMessage();
-	Project getProjectByProjectId(Integer idProject);
-	Collection<Task> toCollection();
-	Task getById(Integer id);
+    
+    
+	Project getProjectById(Integer idProject);
+//	Collection<Task> toCollection();
+//	Task getById(Integer id);
 
 }
